@@ -6,7 +6,7 @@ This implementation is based on Pytorch. The LaProp optimizer is the class ```La
 only with an additional optional argument ```centered = False``` controlling whether to compute the centered second moment instead of the squared gradient. 
 The input argument ```betas``` of ```Adam``` and ```LaProp``` corresponds to the tuple <img src="https://latex.codecogs.com/gif.latex?\inline&space;(\mu,\nu)" /> in our paper.
 
-The learning rate and the weight decay are decoupled in ```laprop.LaProp```, and therefore when one wants to apply a learning rate schedule, one needs to decay both ```'lr'``` and ```'weight_decay'``` stored in the optimizer. 
+The learning rate and the weight decay are decoupled in ```laprop.LaProp```, and therefore when one wants to apply a learning rate schedule with weight decay, one needs to decay ```'lr'``` and ```'weight_decay'``` simultaneously in the optimizer. 
 
 When ```centered``` is enabled, the optimizer will update for ```self.steps_before_using_centered = 10``` steps in the non-centered way to accumulate information of the gradient, and after that it starts to use the centered strategy. The number of the non-centered steps is tentatively set to 10 at its initialization.
 
