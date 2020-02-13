@@ -5,7 +5,10 @@ import torch
 class LaProp(Optimizer):
     def __init__(self, params, lr=4e-4, betas=(0.9, 0.999), eps=1e-15,
                  weight_decay=0, amsgrad=False, centered=False):
+
         self.centered = centered
+        self.steps_before_using_centered = 10
+
         if not 0.0 <= lr:
             raise ValueError("Invalid learning rate: {}".format(lr))
         if not 0.0 <= eps:
@@ -49,14 +52,15 @@ class LaProp(Optimizer):
                     state['exp_avg_lr_1'] = state['exp_avg_lr_2'] = 0.
                     # Exponential moving average of squared gradient values
                     state['exp_avg_sq'] = torch.zeros_like(p.data)
-                    state['exp_mean_avg_sq'] = torch.zeros_like(p.data)
+                    if self.centered:
+                        state['exp_mean_avg_sq'] = torch.zeros_like(p.data)
                     if amsgrad:
                         # Maintains max of all exp. moving avg. of sq. grad. values
                         state['max_exp_avg_sq'] = torch.zeros_like(p.data)
 
                 exp_avg, exp_avg_sq = state['exp_avg'], state['exp_avg_sq']
                 if self.centered:
-                    state['exp_mean_avg_sq'] = state['exp_mean_avg_sq']
+                    exp_mean_avg_sq = state['exp_mean_avg_sq']
                 if amsgrad:
                     max_exp_avg_sq = state['max_exp_avg_sq']
                 beta1, beta2 = group['betas']
@@ -77,12 +81,12 @@ class LaProp(Optimizer):
                 denom = exp_avg_sq
                 if self.centered:
                     exp_mean_avg_sq.mul_(beta2).add_(1 - beta2, grad)
-                    if state['step']>10:
+                    if state['step'] > self.steps_before_using_centered:
                         mean = exp_mean_avg_beta2 ** 2
                         denom = denom - mean
 
                 if amsgrad:
-                    if not (self.centered and state['step']<=10): 
+                    if not (self.centered and state['step'] <= self.steps_before_using_centered): 
                         # Maintains the maximum of all (centered) 2nd moment running avg. till now
                         torch.max(max_exp_avg_sq, denom, out=max_exp_avg_sq)
                         # Use the max. for normalizing running avg. of gradient
