@@ -7,6 +7,8 @@ only with an additional optional argument ```centered = False``` controlling whe
 
 The learning rate and the weight decay are decoupled in ```laprop.LaProp```, and therefore when one wants to apply a learning rate schedule, one needs to decay both ```'lr'``` and ```'weight_decay'``` stored in the optimizer. 
 
+When ```centered``` is enabled, the optimizer will update for ```self.steps_before_using_centered = 10``` steps in the non-centered way to accumulate information of the gradient, and then it starts to use the centered update strategy. The number of the non-centered steps is tentatively set to 10 in the initialization.
+
 ## Additional Details compared with the Paper
 In ```laprop.LaProp```, we have combined the learning rate and the accumulated momentum into one term, so that when the learning rate changes, the momentum accumulated by a larger learning rate still has a larger effect. 
 
