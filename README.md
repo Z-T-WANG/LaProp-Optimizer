@@ -3,8 +3,8 @@ Codes accompanying the paper [LaProp: a Better Way to Combine Momentum with Adap
 
 ## Use
 This implementation is based on Pytorch. The LaProp optimizer is the class ```LaProp``` in file ```laprop.py```, which is adapted from the standard optimizer ```optim.Adam``` of Pytorch. ```laprop.LaProp``` uses the same calling signature as the standard ```optim.Adam```,
-only with an additional optional argument ```centered = False``` controlling whether to compute the centered second moment to divide the gradient. 
-Its input argument ```betas``` corresponds to the tuple <img src="https://latex.codecogs.com/gif.latex?\inline&space;(\mu,\nu)" /> in our paper.
+only with an additional optional argument ```centered = False``` controlling whether to compute the centered second moment instead of the squared gradient. 
+The input argument ```betas``` of ```Adam``` and ```LaProp``` corresponds to the tuple <img src="https://latex.codecogs.com/gif.latex?\inline&space;(\mu,\nu)" /> in our paper.
 
 The learning rate and the weight decay are decoupled in ```laprop.LaProp```, and therefore when one wants to apply a learning rate schedule, one needs to decay both ```'lr'``` and ```'weight_decay'``` stored in the optimizer. 
 
