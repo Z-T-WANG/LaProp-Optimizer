@@ -53,14 +53,14 @@ class LaProp(Optimizer):
                     # Exponential moving average of squared gradient values
                     state['exp_avg_sq'] = torch.zeros_like(p.data)
                     if self.centered:
-                        state['exp_mean_avg_sq'] = torch.zeros_like(p.data)
+                        state['exp_mean_avg_beta2'] = torch.zeros_like(p.data)
                     if amsgrad:
                         # Maintains max of all exp. moving avg. of sq. grad. values
                         state['max_exp_avg_sq'] = torch.zeros_like(p.data)
 
                 exp_avg, exp_avg_sq = state['exp_avg'], state['exp_avg_sq']
                 if self.centered:
-                    exp_mean_avg_sq = state['exp_mean_avg_sq']
+                    exp_mean_avg_beta2 = state['exp_mean_avg_beta2']
                 if amsgrad:
                     max_exp_avg_sq = state['max_exp_avg_sq']
                 beta1, beta2 = group['betas']
@@ -80,7 +80,7 @@ class LaProp(Optimizer):
                 
                 denom = exp_avg_sq
                 if self.centered:
-                    exp_mean_avg_sq.mul_(beta2).add_(1 - beta2, grad)
+                    exp_mean_avg_beta2.mul_(beta2).add_(1 - beta2, grad)
                     if state['step'] > self.steps_before_using_centered:
                         mean = exp_mean_avg_beta2 ** 2
                         denom = denom - mean
