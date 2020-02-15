@@ -16,4 +16,4 @@ In ```laprop.LaProp```, we have combined the learning rate and the accumulated m
 The bias correction terms are treated similarly. Especially, the momentum bias correction is computed from the learning rate and the momentum hyperparameter at each step, so that the bias correction is guaranteed in the presence of a changing learning rate and momentum parameter; the squared gradient bias correction is only computed from the beta2 hyperparameter at each step and does not involve the learning rate.
 
 ## Future Work
-We plan to put our codes for MNIST, CIFAR10, IMDB and RainbowDQN training into this repository as described in our paper, and we will include the codes that are adapted for Fairseq training of IWSLT and Roberta.
+We plan to put our codes for training of MNIST, CIFAR10, IMDB and RainbowDQN into this repository which are described in our paper, and we will also include the codes that are adapted for Fairseq training of IWSLT and Roberta.
