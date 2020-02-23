@@ -20,9 +20,11 @@ We plan to put our codes for training of MNIST, CIFAR10, IMDB and RainbowDQN int
 
 ## Citation
 If you use LaProp in your research, please cite our paper using the following bibtex item:
-``` @article{ziyin2020laprop,
+```
+@article{ziyin2020laprop,
   title={LaProp: a Better Way to Combine Momentum with Adaptive Gradient},
   author={Ziyin, Liu and Wang, Zhikang T and Ueda, Masahito},
   journal={arXiv preprint arXiv:2002.04839},
   year={2020}
-}```
+}
+```
