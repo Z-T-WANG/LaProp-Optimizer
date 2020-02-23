@@ -19,7 +19,7 @@ The bias correction terms are treated similarly. Especially, the momentum bias c
 We plan to put our codes for training of MNIST, CIFAR10, IMDB and RainbowDQN into this repository which are described in our paper, and we will also include the codes that are adapted for Fairseq training of IWSLT and Roberta.
 
 ## Citation
-If you use LaProp in your research, please cite our paper using the following bibtex item:
+If you use LaProp in your research, please cite our paper using the following bibtex item
 ```
 @article{ziyin2020laprop,
   title={LaProp: a Better Way to Combine Momentum with Adaptive Gradient},
