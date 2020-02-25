@@ -6,7 +6,6 @@ class LaProp(Optimizer):
     def __init__(self, params, lr=4e-4, betas=(0.9, 0.999), eps=1e-15,
                  weight_decay=0, amsgrad=False, centered=False):
 
-        self.centered = centered
         self.steps_before_using_centered = 10
 
         if not 0.0 <= lr:
@@ -18,7 +17,7 @@ class LaProp(Optimizer):
         if not 0.0 <= betas[1] < 1.0:
             raise ValueError("Invalid beta parameter at index 1: {}".format(betas[1]))
         defaults = dict(lr=lr, betas=betas, eps=eps,
-                        weight_decay=weight_decay, amsgrad=amsgrad)
+                        weight_decay=weight_decay, amsgrad=amsgrad, centered=centered)
         super(LaProp, self).__init__(params, defaults)
 
     def step(self, closure=None):
@@ -40,6 +39,7 @@ class LaProp(Optimizer):
                 if grad.is_sparse:
                     raise RuntimeError('Adam does not support sparse gradients, please consider SparseAdam instead')
                 amsgrad = group['amsgrad']
+                centered = group['centered']
 
                 state = self.state[p]
 
@@ -49,17 +49,18 @@ class LaProp(Optimizer):
                     # Exponential moving average of gradient values
                     state['exp_avg'] = torch.zeros_like(p.data)
                     # Exponential moving average of learning rates
-                    state['exp_avg_lr_1'] = state['exp_avg_lr_2'] = 0.
+                    state['exp_avg_lr_1'] = 0.; state['exp_avg_lr_2'] = 0.
                     # Exponential moving average of squared gradient values
                     state['exp_avg_sq'] = torch.zeros_like(p.data)
-                    if self.centered:
+                    if centered:
+                    # Exponential moving average of gradient values as calculated by beta2
                         state['exp_mean_avg_beta2'] = torch.zeros_like(p.data)
                     if amsgrad:
                         # Maintains max of all exp. moving avg. of sq. grad. values
                         state['max_exp_avg_sq'] = torch.zeros_like(p.data)
 
                 exp_avg, exp_avg_sq = state['exp_avg'], state['exp_avg_sq']
-                if self.centered:
+                if centered:
                     exp_mean_avg_beta2 = state['exp_mean_avg_beta2']
                 if amsgrad:
                     max_exp_avg_sq = state['max_exp_avg_sq']
@@ -79,14 +80,14 @@ class LaProp(Optimizer):
                 bias_correction2 = state['exp_avg_lr_2']
                 
                 denom = exp_avg_sq
-                if self.centered:
+                if centered:
                     exp_mean_avg_beta2.mul_(beta2).add_(1 - beta2, grad)
                     if state['step'] > self.steps_before_using_centered:
                         mean = exp_mean_avg_beta2 ** 2
                         denom = denom - mean
 
                 if amsgrad:
-                    if not (self.centered and state['step'] <= self.steps_before_using_centered): 
+                    if not (centered and state['step'] <= self.steps_before_using_centered): 
                         # Maintains the maximum of all (centered) 2nd moment running avg. till now
                         torch.max(max_exp_avg_sq, denom, out=max_exp_avg_sq)
                         # Use the max. for normalizing running avg. of gradient
