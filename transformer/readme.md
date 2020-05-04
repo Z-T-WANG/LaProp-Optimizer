@@ -1,4 +1,4 @@
-Here we present the files and commands that we have used for the transformer tranining experiments in the paper. 
+Here we present the files and commands we have used for the transformer tranining experiments. 
 We use the implementation provided by the [Fairseq](https://github.com/pytorch/fairseq) package, and run the [training script](https://github.com/pytorch/fairseq/blob/master/fairseq_cli/train.py) thereof.
 
 ## Use
