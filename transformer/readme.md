@@ -8,6 +8,7 @@ Then LaProp is invoked by the following commandline options using the training s
 ```--optimizer laprop [--laprop-betas '(mu, nu)'] [--laprop-eps epsilon] [--wd weight_decay] [--laprop-centered]```
 
 ## Use
+### IWSLT14 German to English Translation
 Following the prescription given in https://github.com/pytorch/fairseq/blob/master/examples/translation/README.md section **IWSLT'14 German to English (Transformer)**, we prepared the data in ```data-bin``` directory and ran the following command. The arguments concerning the choice between Adam and LaProp, or whether to use warmup, are indicated as exclusive choice ```[adam|laprop]``` and optional argument```[--warmup-updates num]```. We have plotted the training losses in our paper.
 ```
 python3.6 train.py \
