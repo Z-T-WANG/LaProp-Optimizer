@@ -22,7 +22,7 @@ python3.6 train.py \
 ```
 
 ### RoBERTa Pretraining
-Referring to the prescription given in https://github.com/pytorch/fairseq/blob/master/examples/roberta/README.pretraining.md , we prepared the full English Wikipedia as the training data, which is detailed in the Appendix of our paper, and we used the following command.
+Referring to the prescription given in https://github.com/pytorch/fairseq/blob/master/examples/roberta/README.pretraining.md , we prepared and preprocessed the full English Wikipedia as the training data, which is detailed in the Appendix of our paper, and we used the following command.
 ```
 TOTAL_UPDATES=20000     # Our number of training steps
 EXPECTED_UPDATES=125000 # The original number of training steps
