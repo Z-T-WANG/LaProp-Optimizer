@@ -1,5 +1,5 @@
 # LaProp-Optimizer
-Codes accompanying the paper [LaProp: a Better Way to Combine Momentum with Adaptive Gradient](https://arxiv.org/abs/2002.04839)
+Codes accompanying the paper [LaProp: Separating Momentum and Adaptivity in Adam](https://arxiv.org/abs/2002.04839)
 
 ## Use
 This implementation is based on [Pytorch](https://pytorch.org/). The LaProp optimizer is the class ```LaProp``` in file ```laprop.py```, which is adapted from the standard optimizer ```optim.Adam``` of Pytorch. ```laprop.LaProp``` uses the same calling signature as the standard ```optim.Adam```,
